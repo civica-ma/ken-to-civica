@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ken is now Civica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ken-navy:    #1e2560;
+      --ken-orange:  #f15722;
+      --civ-blue:    #3ab5e6;
+      --civ-sky:     #e8f6fd;
+      --civ-yellow:  #f5c842;
+      --civ-dark:    #1a3a5c;
+      --radius-xl:   24px;
+      --radius-pill: 999px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f7f9fc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem 3rem;
+      overflow-x: hidden;
+    }
+
+    /* ── animated bg blobs ── */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .18;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .blob-1 { width: 480px; height: 480px; background: #1e2560; top: -120px; left: -120px; animation-delay: 0s; }
+    .blob-2 { width: 360px; height: 360px; background: #f15722; top: 40%; left: -80px; animation-delay: -3s; }
+    .blob-3 { width: 420px; height: 420px; background: #3ab5e6; top: -80px; right: -100px; animation-delay: -5s; }
+    .blob-4 { width: 300px; height: 300px; background: #f5c842; bottom: -60px; right: -60px; animation-delay: -8s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 40px) scale(1.08); }
+    }
+
+    /* ── page wrapper ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    /* ── top eyebrow ── */
+    .eyebrow {
+      text-align: center;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      animation: fadeUp .7s ease forwards .1s;
+    }
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      border: 1.5px solid rgba(58,181,230,.3);
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--civ-dark);
+    }
+    .eyebrow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--civ-blue);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .4; transform: scale(.7); }
+    }
+
+    /* ── headline ── */
+    .headline {
+      text-align: center;
+      margin-bottom: .6rem;
+      opacity: 0;
+      animation: fadeUp .7s ease forwards .25s;
+    }
+    .headline h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 300;
+      color: #111;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+    }
+    .headline h1 strong { font-weight: 600; color: var(--civ-dark); }
+
+    .sub {
+      text-align: center;
+      font-size: 15px;
+      color: #7a8a9a;
+      font-weight: 400;
+      line-height: 1.7;
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      animation: fadeUp .7s ease forwards .4s;
+    }
+
+    /* ── the main card ── */
+    .card {
+      background: white;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.07);
+      opacity: 0;
+      animation: fadeUp .8s ease forwards .5s;
+    }
+
+    /* split panels */
+    .panels {
+      display: flex;
+      min-height: 380px;
+      position: relative;
+    }
+
+    /* ken */
+    .panel-ken {
+      flex: 1;
+      background: var(--ken-navy);
+      padding: 2.8rem 2.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-ken::before {
+      content: '';
+      position: absolute;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(241,87,34,.25) 0%, transparent 70%);
+      bottom: -80px; right: -60px;
+    }
+    .panel-ken::after {
+      content: '';
+      position: absolute;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(241,87,34,.15) 0%, transparent 70%);
+      top: -30px; left: -30px;
+    }
+
+    /* civica */
+    .panel-civica {
+      flex: 1;
+      background: var(--civ-sky);
+      padding: 2.8rem 2.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-civica::before {
+      content: '';
+      position: absolute;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(58,181,230,.18) 0%, transparent 70%);
+      top: -60px; right: -60px;
+    }
+    .panel-civica::after {
+      content: '';
+      position: absolute;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,200,66,.2) 0%, transparent 70%);
+      bottom: -40px; left: -20px;
+    }
+
+    /* middle seam */
+    .seam {
+      width: 1px;
+      background: linear-gradient(to bottom,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,.5) 30%,
+        rgba(58,181,230,.6) 50%,
+        rgba(255,255,255,.5) 70%,
+        rgba(255,255,255,0) 100%);
+      position: relative;
+      z-index: 2;
+    }
+    .seam-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 1.5px solid rgba(58,181,230,.35);
+      border-radius: var(--radius-pill);
+      padding: 8px 14px;
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--civ-dark);
+      white-space: nowrap;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    /* panel content */
+    .panel-era {
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      opacity: .45;
+      margin-bottom: .6rem;
+    }
+    .panel-era-ken  { color: white; }
+    .panel-era-civ  { color: var(--civ-dark); }
+
+    .brand-name {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(36px, 5vw, 52px);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+    .brand-name-ken  { color: white; }
+    .brand-name-civ  { color: var(--civ-dark); }
+
+    .brand-accent-ken {
+      display: inline-block;
+      width: 10px; height: 10px;
+      background: var(--ken-orange);
+      border-radius: 2px;
+      margin-left: 4px;
+      vertical-align: middle;
+      margin-bottom: 6px;
+    }
+    .brand-accent-civ {
+      display: inline-block;
+      font-size: 20px;
+      color: var(--civ-yellow);
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+
+    .brand-url {
+      display: inline-block;
+      margin-top: .7rem;
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      letter-spacing: .08em;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+    }
+    .brand-url-ken  { color: rgba(255,255,255,.45); border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.05); }
+    .brand-url-civ  { color: var(--civ-blue); border: 1px solid rgba(58,181,230,.25); background: rgba(58,181,230,.07); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+    .tag {
+      font-size: 11px;
+      padding: 4px 11px;
+      border-radius: var(--radius-pill);
+      font-weight: 500;
+    }
+    .tag-ken  { background: rgba(241,87,34,.18); color: #ffb49a; }
+    .tag-civ  { background: rgba(58,181,230,.15); color: #1a6a96; }
+
+    .panel-desc {
+      font-size: 12px;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    .panel-desc-ken { color: rgba(255,255,255,.38); }
+    .panel-desc-civ { color: rgba(26,58,92,.45); }
+
+    /* gradient transition bar */
+    .transition-bar {
+      height: 5px;
+      background: linear-gradient(90deg,
+        var(--ken-navy) 0%,
+        var(--ken-orange) 28%,
+        #9d6aaa 50%,
+        var(--civ-blue) 72%,
+        var(--civ-yellow) 100%);
+      border-radius: 0;
+    }
+
+    /* cta section */
+    .cta-section {
+      padding: 2.4rem 2rem 2.2rem;
+      text-align: center;
+      border-top: 1px solid rgba(0,0,0,.05);
+    }
+    .cta-caption {
+      font-size: 14px;
+      color: #9aa5b4;
+      font-style: italic;
+      font-weight: 300;
+      margin-bottom: 1.4rem;
+      letter-spacing: .01em;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--civ-dark);
+      color: white;
+      text-decoration: none;
+      padding: 15px 36px;
+      border-radius: var(--radius-pill);
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: .02em;
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(58,181,230,.25) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .25s;
+    }
+    .cta-btn:hover { transform: translateY(-2px) scale(1.02); background: #0f2540; }
+    .cta-btn:hover::before { opacity: 1; }
+    .btn-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      background: rgba(255,255,255,.15);
+      border-radius: 50%;
+      font-size: 13px;
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+    }
+    .cta-btn:hover .btn-arrow { transform: translateX(3px); }
+    .cta-domain {
+      margin-top: .9rem;
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: #bcc5cf;
+    }
+
+    /* footer */
+    .footer {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp .7s ease forwards .9s;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: #b0bbc7;
+      font-family: 'Sora', sans-serif;
+      letter-spacing: .04em;
+    }
+    .footer-contact {
+      font-size: 12px;
+      color: #9aa5b4;
+    }
+    .footer-contact a {
+      color: var(--civ-blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer-contact a:hover { text-decoration: underline; }
+
+    /* animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      .panels { flex-direction: column; }
+      .seam { width: 100%; height: 1px; }
+      .seam-badge { writing-mode: horizontal-tb; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+      .panel-ken, .panel-civica { padding: 2rem 1.6rem; min-height: 260px; }
+      .footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ambient blobs -->
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
+  <div class="wrapper">
+
+    <!-- eyebrow -->
+    <div class="eyebrow">
+      <span class="eyebrow-pill">
+        <span class="eyebrow-dot"></span>
+        An exciting new chapter
+      </span>
+    </div>
+
+    <!-- headline -->
+    <div class="headline">
+      <h1>Ken has grown into <strong>Civica</strong></h1>
+    </div>
+    <p class="sub">
+      Everything you loved is still here — just with a fresher spirit.<br>
+      Welcome to the next version of your workspace.
+    </p>
+
+    <!-- main card -->
+    <div class="card">
+
+      <!-- gradient bar top -->
+      <div class="transition-bar"></div>
+
+      <!-- split panels -->
+      <div class="panels">
+
+        <!-- Ken -->
+        <div class="panel-ken">
+          <div style="position:relative;z-index:1">
+            <p class="panel-era panel-era-ken">Was</p>
+            <div class="brand-name brand-name-ken">
+              Ken<span class="brand-accent-ken"></span>
+            </div>
+            <span class="brand-url brand-url-ken">ken.ma</span>
+            <div class="tags">
+              <span class="tag tag-ken">Contacts</span>
+              <span class="tag tag-ken">Pipeline</span>
+              <span class="tag tag-ken">Workspace</span>
+            </div>
+          </div>
+          <div style="position:relative;z-index:1">
+            <p class="panel-desc panel-desc-ken">
+              The platform you built your workflow on,<br>
+              now reimagined with a new identity.
+            </p>
+          </div>
+        </div>
+
+        <!-- seam divider -->
+        <div class="seam">
+          <div class="seam-badge">becomes</div>
+        </div>
+
+        <!-- Civica -->
+        <div class="panel-civica">
+          <div style="position:relative;z-index:1">
+            <p class="panel-era panel-era-civ">Is now</p>
+            <div class="brand-name brand-name-civ">
+              Civica<span class="brand-accent-civ">✦</span>
+            </div>
+            <span class="brand-url brand-url-civ">civica.ma</span>
+            <div class="tags">
+              <span class="tag tag-civ">Contacts</span>
+              <span class="tag tag-civ">Pipeline</span>
+              <span class="tag tag-civ">Workspace</span>
+            </div>
+          </div>
+          <div style="position:relative;z-index:1">
+            <p class="panel-desc panel-desc-civ">
+              Same trusted tools, a clearer vision —<br>
+              lighter, warmer, and built for you.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- gradient bar bottom -->
+      <div class="transition-bar" style="transform:scaleX(-1)"></div>
+
+      <!-- CTA -->
+      <div class="cta-section">
+        <p class="cta-caption">"A familiar home, a brand-new door."</p>
+        <a class="cta-btn" href="https://civica.ma">
+          Take me to Civica
+          <span class="btn-arrow">→</span>
+        </a>
+        <p class="cta-domain">civica.ma · your workspace, reimagined</p>
+      </div>
+
+    </div>
+
+    <!-- footer -->
+    <div class="footer">
+      <span class="footer-copy">© 2025 Civica — All rights reserved</span>
+      <span class="footer-contact">
+        Questions? <a href="mailto:hello@civica.ma">hello@civica.ma</a>
+      </span>
+    </div>
+
+  </div>
+
+</body>
+</html>
